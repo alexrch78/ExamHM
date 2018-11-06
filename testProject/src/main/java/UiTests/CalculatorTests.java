@@ -9,11 +9,13 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
+import PageObject.CalculatorPage;
+import enums.CalculatorOperator;
+
 
 public class CalculatorTests {
 	
 	private WebDriver driver;
-	private final int DELTA = 0;
 
 	@Before
 	public void setUp() throws Exception {
@@ -22,36 +24,36 @@ public class CalculatorTests {
 
 
 	@Test
-	public void test1() {
-		double expectedResult = 5;
+	public void testAddition() throws Exception {
+		String expectedResult = "5";
 		CalculatorPage calculator = new CalculatorPage(driver);
-		double result = calculator.getBinaryResult(2, 3, CalculatorBinaryOperator.ADDITION);
-		Assert.assertEquals(expectedResult, result, DELTA);
+		String result = calculator.getBinaryResult(2, 3, CalculatorOperator.ADDITION);
+		Assert.assertEquals(expectedResult, result);
 	}
 	
 	@Test
-	public void test2() {
-		double expectedResult = 8;
+	public void testSubtraction() throws Exception {
+		String expectedResult = "8";
 		CalculatorPage calculator = new CalculatorPage(driver);
-		double result = calculator.getBinaryResult(10, 2, CalculatorBinaryOperator.SUBTRACTION);
-		Assert.assertEquals(expectedResult, result, DELTA);
+		String result = calculator.getBinaryResult(10, 2, CalculatorOperator.SUBTRACTION);
+		Assert.assertEquals(expectedResult, result);
 	}
 	
 	@Test
-	public void test3() {
-		double notValidResult = 20;
+	public void testComplex() throws NumberFormatException, Exception {
+		String notValidResult = "20";
 		CalculatorPage calculator = new CalculatorPage(driver);
-		double substractionResult = calculator.getBinaryResult(10, 2, CalculatorBinaryOperator.SUBTRACTION);
-		double result = calculator.getBinaryResult(substractionResult, 2, CalculatorBinaryOperator.MULTIPLICATION);
+		String substractionResult = calculator.getBinaryResult(10, 2, CalculatorOperator.SUBTRACTION);		
+		String result = calculator.getBinaryResult(Double.parseDouble(substractionResult), 2, CalculatorOperator.MULTIPLICATION);
 		Assert.assertNotEquals(notValidResult, result);
 	}
 	
 	@Test
-	public void test4() {
-		double expectedResult = 0.5;
+	public void testSinus() throws Exception {
+		String expectedResult = "0.5";
 		CalculatorPage calculator = new CalculatorPage(driver);
-		double result = calculator.getTrigoResult(30, CalculatorTrigoOperator.SINUS);
-		Assert.assertEquals(expectedResult, result, DELTA);
+		String result = calculator.getTrigoResult(30, CalculatorOperator.SINUS);
+		Assert.assertEquals(expectedResult, result);
 	}
 	
 	
