@@ -4,4 +4,11 @@
   <artifactId>testProject</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>Test Project</name>
+  <dependencies>
+  	<dependency>
+  		<groupId>org.seleniumhq.selenium</groupId>
+  		<artifactId>selenium-java</artifactId>
+  		<version>3.141.0</version>
+  	</dependency>
+  </dependencies>
 </project>
