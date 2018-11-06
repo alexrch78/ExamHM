@@ -50,7 +50,7 @@ public class CalculatorTests {
 	public void test4() {
 		double expectedResult = 0.5;
 		CalculatorPage calculator = new CalculatorPage(driver);
-		double result = calculator.getUnaryResult(30, CalculatorBinaryOperator.SINUS);
+		double result = calculator.getTrigoResult(30, CalculatorTrigoOperator.SINUS);
 		Assert.assertEquals(expectedResult, result, DELTA);
 	}
 	
