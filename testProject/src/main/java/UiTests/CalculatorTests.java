@@ -79,15 +79,6 @@ public class CalculatorTests {
 		Assert.assertEquals(expectedResultTrigo, history.getResult(formulaTrigo));
 	}
 	
-	//@Test
-	public void testHistory() {
-		//CalculatorHistoryPageSection history = new CalculatorHistoryPageSection(driver);
-		//Assert.assertEquals(expectedResultAdd, history.getResult(formulaAdd));
-		//Assert.assertEquals(expectedResultSubstraction, history.getResult(formulaSubstraction));
-		//Assert.assertNotEquals(notValidResultComplex, history.getResult(formulaComplex));
-		//Assert.assertEquals(expectedResultTrigo, history.getResult(formulaTrigo));
-	}
-	
 	
 	@After
 	public void tearDown() throws Exception {
