@@ -1,6 +1,8 @@
 package PageObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.openqa.selenium.By;
@@ -9,7 +11,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import enums.CalculatorOperator;
+import utilities.StringUtilities;
 
 public class CalculatorPage {
 	private WebDriver driver;
@@ -36,24 +38,13 @@ public class CalculatorPage {
 		typeFromKey(CLEAR);
 	}
 
-	public String getTrigoResult(String input, CalculatorOperator operator) throws Exception {
-		insertOperator(operator);
-		insertFormula(input);
-		return  calculateAndGetResult();
-	}
 
 	public String getCalculationResult(String formula) throws Exception {
-		insertFormula(formula);
+		insertCalculationFormula(formula);
 		return  calculateAndGetResult();
 	}
 
 	
-	
-	private void insertOperator(CalculatorOperator operator) {
-		typeFromKey(operator.getValue());
-	}
-
-
 	private String calculateAndGetResult() {
 		calculate();
 		return getResult();
@@ -75,18 +66,38 @@ public class CalculatorPage {
 			wait.until(ExpectedConditions.numberOfElementsToBe(LOADING, 0));
 		}
 
-		private void insertFormula (String formula) throws Exception {
-			char[] formulaArray = formula.toCharArray();
-			for(char charInput : formulaArray) {
-				if(getSpecialCharacters().containsKey(charInput))
-					typeFromKey(getSpecialCharacters().get(charInput));
-				else if(Character.isDigit(charInput))
-					typeFromKey(Character.toString(charInput));
-				else
-					throw new Exception("invalid input");
-				}
-				
+	private void insertCalculationFormula (String formula) throws Exception {
+		char[] formulaArray = formula.toCharArray();
+		StringBuilder alphabeticFunctionBuilder = new StringBuilder();
+		Boolean alphabeticFunctionInserted = false;
+		for(int i=0; i< formulaArray.length; i++){
+			char charInput = formulaArray[i];
+			if(Character.isAlphabetic(charInput)) {
+				alphabeticFunctionBuilder.append(charInput);
 			}
+			else{
+				String alphabeticFunctionStr = alphabeticFunctionBuilder.toString();
+				if(alphabeticFunctionStr != null && !alphabeticFunctionStr.isEmpty()) {
+					if(getTrigoFunctions().contains(alphabeticFunctionStr)) {
+						typeFromKey(StringUtilities.ReplaceFristLetterToCapital(alphabeticFunctionStr));
+						alphabeticFunctionBuilder = new StringBuilder();
+						alphabeticFunctionInserted = true;
+						alphabeticFunctionStr = "";
+						continue;
+					}
+					else
+						throw new Exception("invalid input");
+				}								
+			if(alphabeticFunctionInserted && charInput == '(')
+				alphabeticFunctionInserted = false;
+			else if(getSpecialCharacters().containsKey(charInput))
+				typeFromKey(getSpecialCharacters().get(charInput));
+			else if(Character.isDigit(charInput))
+				typeFromKey(Character.toString(charInput));
+			}
+				
+		}			
+	}
 		
 		private static Map<Character, String> getSpecialCharacters()
 		{
@@ -100,4 +111,15 @@ public class CalculatorPage {
 			specialCharacters.put('*', "Mult");
 			return specialCharacters;
 		}
+		
+		private static ArrayList<String> getTrigoFunctions(){
+			ArrayList<String> trigoFunctions = new ArrayList<String>();
+			trigoFunctions.add("sin");
+			trigoFunctions.add("cos");
+			trigoFunctions.add("tan");
+			return trigoFunctions;
+		}
+		
+
+		
 }
